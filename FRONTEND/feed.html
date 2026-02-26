@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisan Hub | Feed</title>
+    <meta name="description" content="Discover amazing artwork from artists around the world on Artisan Hub.">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .create-post-box {
+            cursor: pointer;
+        }
+
+        .create-post-box:hover {
+            border-color: rgba(251, 191, 36, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .media-preview {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .media-preview img,
+        .media-preview video {
+            max-height: 300px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .media-preview .remove-media {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            border: none;
+        }
+
+        .type-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+
+        .type-tab {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #9ca3af;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .type-tab.active {
+            background: rgba(251, 191, 36, 0.1);
+            border-color: rgba(251, 191, 36, 0.3);
+            color: #fbbf24;
+        }
+
+        .comments-section {
+            padding: 12px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .comment-item {
+            display: flex;
+            gap: 10px;
+            padding: 8px 0;
+        }
+
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .comment-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .comment-input-row input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: white;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .comment-input-row input:focus {
+            border-color: rgba(251, 191, 36, 0.4);
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.03) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-link {
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: #9ca3af;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fbbf24;
+            background: rgba(251, 191, 36, 0.08);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="feed.html" class="navbar-logo">
+            <img src="cropped_circle_image.png" alt="Artisan Hub">
+            <span>Artisan Hub</span>
+        </a>
+        <div class="navbar-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search artists, artwork, companies..." id="searchInput">
+        </div>
+        <div class="nav-links">
+            <a href="feed.html" class="nav-link active"><i class="fas fa-home"></i> <span
+                    class="hidden sm:inline">Feed</span></a>
+            <a href="explore.html" class="nav-link"><i class="fas fa-compass"></i> <span
+                    class="hidden sm:inline">Explore</span></a>
+            <a href="chat.html" class="nav-link"><i class="fas fa-comments"></i> <span
+                    class="hidden sm:inline">Chat</span></a>
+        </div>
+        <div class="navbar-actions">
+            <button class="nav-btn" title="Notifications"><i class="fas fa-bell"></i></button>
+            <div class="dropdown">
+                <img src="" alt="Profile" class="nav-avatar" id="navAvatar" onclick="toggleDropdown()">
+                <div class="dropdown-menu" id="profileDropdown">
+                    <button class="dropdown-item" onclick="window.location.href='profile.html'"><i
+                            class="fas fa-user"></i> My Profile</button>
+                    <button class="dropdown-item" onclick="window.location.href='explore.html'"><i
+                            class="fas fa-compass"></i> Explore</button>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" onclick="logout()" style="color: #ef4444;"><i
+                            class="fas fa-sign-out-alt"></i> Sign Out</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Layout -->
+    <div class="page-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar-left">
+            <div class="glass-card profile-card-mini" id="sidebarProfile">
+                <img src="" alt="" class="profile-avatar" id="sidebarAvatar">
+                <h3 class="profile-name" id="sidebarName">Loading...</h3>
+                <p class="profile-role" id="sidebarRole"></p>
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <div class="profile-stat-value" id="sidebarFollowers">0</div>
+                        <div class="profile-stat-label">Followers</div>
+                    </div>
+                    <div class="profile-stat">
+                        <div class="profile-stat-value" id="sidebarFollowing">0</div>
+                        <div class="profile-stat-label">Following</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card mt-4" style="padding: 16px;">
+                <h4
+                    style="font-size: 0.8rem; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">
+                    Quick Links</h4>
+                <a href="profile.html" class="user-card" style="padding: 8px 4px;">
+                    <i class="fas fa-palette" style="color: #fbbf24; width: 20px;"></i>
+                    <span style="font-size: 0.85rem; color: #d1d5db;">My Portfolio</span>
+                </a>
+                <a href="explore.html" class="user-card" style="padding: 8px 4px;">
+                    <i class="fas fa-search" style="color: #fbbf24; width: 20px;"></i>
+                    <span style="font-size: 0.85rem; color: #d1d5db;">Discover Artists</span>
+                </a>
+                <a href="chat.html" class="user-card" style="padding: 8px 4px;">
+                    <i class="fas fa-lock" style="color: #fbbf24; width: 20px;"></i>
+                    <span style="font-size: 0.85rem; color: #d1d5db;">Encrypted Chat</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Center Feed -->
+        <main class="main-content">
+            <!-- Create Post Box -->
+            <div class="glass-card create-post-box" onclick="openCreateModal()"
+                style="margin-bottom: 20px; display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                <img src="" alt="" class="post-avatar" id="createPostAvatar" style="width: 44px; height: 44px;">
+                <div
+                    style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 10px 16px; color: #6b7280; font-size: 0.9rem;">
+                    What's on your creative mind?
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="nav-btn" style="width: 36px; height: 36px; font-size: 0.9rem;"
+                        onclick="event.stopPropagation(); openCreateModal('image')"><i class="fas fa-image"
+                            style="color: #22c55e;"></i></button>
+                    <button class="nav-btn" style="width: 36px; height: 36px; font-size: 0.9rem;"
+                        onclick="event.stopPropagation(); openCreateModal('video')"><i class="fas fa-video"
+                            style="color: #3b82f6;"></i></button>
+                    <button class="nav-btn" style="width: 36px; height: 36px; font-size: 0.9rem;"
+                        onclick="event.stopPropagation(); openCreateModal('text')"><i class="fas fa-pen-fancy"
+                            style="color: #a855f7;"></i></button>
+                </div>
+            </div>
+
+            <!-- Feed Posts -->
+            <div id="feedPosts">
+                <div class="loading-overlay">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+
+            <div id="loadMore" class="hidden" style="text-align: center; padding: 20px;">
+                <button class="btn btn-ghost" onclick="loadMorePosts()">Load More</button>
+            </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="sidebar-right">
+            <div class="glass-card">
+                <h4
+                    style="font-size: 0.8rem; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">
+                    Suggested Artists</h4>
+                <div id="suggestedUsers">
+                    <div class="loading-overlay" style="padding: 20px 0;">
+                        <div class="spinner" style="width: 24px; height: 24px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card mt-4" style="padding: 16px;">
+                <h4
+                    style="font-size: 0.8rem; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">
+                    Trending Tags</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    <span class="tag">#DigitalArt</span>
+                    <span class="tag">#Photography</span>
+                    <span class="tag">#FilmMaking</span>
+                    <span class="tag">#Illustration</span>
+                    <span class="tag">#Acting</span>
+                    <span class="tag">#Music</span>
+                    <span class="tag">#Dance</span>
+                    <span class="tag">#Writing</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Create Post Modal -->
+    <div class="modal-overlay" id="createModal">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2 class="modal-title">Create Post</h2>
+                <button class="modal-close" onclick="closeCreateModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="type-tabs">
+                    <div class="type-tab active" data-type="image" onclick="setPostType('image')"><i
+                            class="fas fa-image"></i> Image</div>
+                    <div class="type-tab" data-type="video" onclick="setPostType('video')"><i class="fas fa-video"></i>
+                        Video</div>
+                    <div class="type-tab" data-type="text" onclick="setPostType('text')"><i
+                            class="fas fa-pen-fancy"></i> Text</div>
+                </div>
+
+                <div class="input-group">
+                    <textarea class="input-field" id="postContent"
+                        placeholder="Share your thoughts, a synopsis, a story idea..." rows="4"></textarea>
+                </div>
+
+                <div id="mediaUploadArea">
+                    <label for="mediaFile"
+                        style="display: block; border: 2px dashed rgba(255,255,255,0.1); border-radius: 12px; padding: 32px; text-align: center; cursor: pointer; transition: all 0.3s ease;"
+                        onmouseover="this.style.borderColor='rgba(251,191,36,0.3)'"
+                        onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">
+                        <i class="fas fa-cloud-upload-alt"
+                            style="font-size: 2rem; color: #6b7280; margin-bottom: 8px; display: block;"></i>
+                        <span style="color: #9ca3af; font-size: 0.9rem;">Click to upload an image or video</span>
+                        <span style="display: block; color: #6b7280; font-size: 0.75rem; margin-top: 4px;">Max 50MB —
+                            JPEG, PNG, GIF, MP4, WebM</span>
+                    </label>
+                    <input type="file" id="mediaFile" accept="image/*,video/*" style="display: none;"
+                        onchange="previewMedia(this)">
+                </div>
+
+                <div id="mediaPreview" class="media-preview hidden"></div>
+
+                <div class="input-group" style="margin-top: 12px;">
+                    <input class="input-field" id="postTags"
+                        placeholder="Tags (comma separated): digital art, painting, sculpture">
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" onclick="submitPost()"
+                    id="submitPostBtn">
+                    <i class="fas fa-paper-plane"></i> Publish
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="openCreateModal()" title="Create Post">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let currentPage = 1;
+        let totalPages = 1;
+        let selectedPostType = 'image';
+        let selectedFile = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!requireAuth()) return;
+            loadUserProfile();
+            loadFeed();
+            loadSuggestedUsers();
+        });
+
+        async function loadUserProfile() {
+            const user = getCurrentUser();
+            if (user) {
+                const avatar = getAvatar(user.avatar, user.name);
+                document.getElementById('navAvatar').src = avatar;
+                document.getElementById('sidebarAvatar').src = avatar;
+                document.getElementById('createPostAvatar').src = avatar;
+                document.getElementById('sidebarName').textContent = user.name;
+                document.getElementById('sidebarRole').textContent = user.role === 'production_company' ? '🎬 Production Company' : '🎨 Artist';
+                document.getElementById('sidebarFollowers').textContent = user.followers?.length || 0;
+                document.getElementById('sidebarFollowing').textContent = user.following?.length || 0;
+            }
+        }
+
+        async function loadFeed() {
+            try {
+                const data = await api.get(`/posts?page=${currentPage}&limit=10`);
+                totalPages = data.pages;
+                const container = document.getElementById('feedPosts');
+
+                if (currentPage === 1) container.innerHTML = '';
+
+                if (data.posts.length === 0 && currentPage === 1) {
+                    container.innerHTML = `
+                    <div class="glass-card empty-state">
+                        <i class="fas fa-palette"></i>
+                        <h3>No posts yet</h3>
+                        <p>Be the first to share your artwork with the community!</p>
+                    </div>
+                `;
+                    return;
+                }
+
+                data.posts.forEach(post => {
+                    container.innerHTML += renderPost(post);
+                });
+
+                document.getElementById('loadMore').classList.toggle('hidden', currentPage >= totalPages);
+            } catch (error) {
+                showToast('Failed to load feed', 'error');
+            }
+        }
+
+        function renderPost(post) {
+            const user = post.author || {};
+            const avatar = getAvatar(user.avatar, user.name);
+            const currentUser = getCurrentUser();
+            const isLiked = post.likes?.includes(currentUser?._id);
+            let mediaHTML = '';
+
+            if (post.type === 'image' && post.mediaUrl) {
+                mediaHTML = `<img src="${post.mediaUrl}" alt="Artwork" class="post-media" loading="lazy">`;
+            } else if (post.type === 'video' && post.mediaUrl) {
+                mediaHTML = `<video src="${post.mediaUrl}" controls class="post-media-video"></video>`;
+            }
+
+            const commentsHTML = (post.comments || []).slice(0, 3).map(c => `
+            <div class="comment-item">
+                <img src="${getAvatar(c.user?.avatar, c.user?.name)}" class="comment-avatar">
+                <div>
+                    <span style="font-weight: 600; font-size: 0.8rem;">${c.user?.name || 'User'}</span>
+                    <p style="font-size: 0.8rem; color: #9ca3af;">${c.text}</p>
+                </div>
+            </div>
+        `).join('');
+
+            return `
+        <div class="post-card animate-fadeInUp" id="post-${post._id}">
+            <div class="post-header">
+                <img src="${avatar}" alt="${user.name}" class="post-avatar" onclick="viewProfile('${user._id}')" style="cursor: pointer;">
+                <div class="post-author-info">
+                    <div class="post-author-name" style="cursor: pointer;" onclick="viewProfile('${user._id}')">
+                        ${user.name || 'Unknown'} ${verifiedBadge(user.isVerified)}
+                    </div>
+                    <div class="post-meta">${user.role === 'production_company' ? '🎬 Production Company' : '🎨 Artist'} • ${timeAgo(post.createdAt)}</div>
+                </div>
+                <button class="nav-btn" style="width: 32px; height: 32px; font-size: 0.8rem;"><i class="fas fa-ellipsis-h"></i></button>
+            </div>
+            ${post.content ? `<div class="post-content">${post.content}</div>` : ''}
+            ${mediaHTML}
+            ${post.tags?.length ? `<div style="padding: 8px 20px; display: flex; flex-wrap: wrap; gap: 4px;">${post.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>` : ''}
+            <div class="post-actions">
+                <button class="post-action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post._id}', this)">
+                    <i class="fas fa-heart"></i> <span>${post.likes?.length || 0}</span>
+                </button>
+                <button class="post-action-btn" onclick="toggleComments('${post._id}')">
+                    <i class="fas fa-comment"></i> <span>${post.comments?.length || 0}</span>
+                </button>
+                <button class="post-action-btn" onclick="sharePost('${post._id}')">
+                    <i class="fas fa-share"></i> Share
+                </button>
+            </div>
+            <div class="comments-section hidden" id="comments-${post._id}">
+                ${commentsHTML}
+                <div class="comment-input-row">
+                    <img src="${getAvatar(currentUser?.avatar, currentUser?.name)}" class="comment-avatar">
+                    <input type="text" placeholder="Write a comment..." onkeypress="if(event.key==='Enter') addComment('${post._id}', this)">
+                </div>
+            </div>
+        </div>
+        `;
+        }
+
+        async function toggleLike(postId, btn) {
+            try {
+                const data = await api.put(`/posts/${postId}/like`);
+                const isLiked = btn.classList.toggle('liked');
+                btn.querySelector('span').textContent = data.likes.length;
+            } catch (error) {
+                showToast('Failed to like post', 'error');
+            }
+        }
+
+        function toggleComments(postId) {
+            const section = document.getElementById(`comments-${postId}`);
+            section.classList.toggle('hidden');
+        }
+
+        async function addComment(postId, input) {
+            const text = input.value.trim();
+            if (!text) return;
+
+            try {
+                await api.post(`/posts/${postId}/comment`, { text });
+                input.value = '';
+                showToast('Comment added!', 'success');
+                // Reload the feed to show updated comments
+                currentPage = 1;
+                loadFeed();
+            } catch (error) {
+                showToast('Failed to add comment', 'error');
+            }
+        }
+
+        function loadMorePosts() {
+            currentPage++;
+            loadFeed();
+        }
+
+        async function loadSuggestedUsers() {
+            try {
+                const data = await api.get('/users?limit=5');
+                const container = document.getElementById('suggestedUsers');
+                const currentUser = getCurrentUser();
+                const users = data.users.filter(u => u._id !== currentUser?._id).slice(0, 5);
+
+                if (users.length === 0) {
+                    container.innerHTML = '<p style="color: #6b7280; font-size: 0.85rem; padding: 12px 0;">No suggestions yet</p>';
+                    return;
+                }
+
+                container.innerHTML = users.map(u => `
+                <div class="user-card" onclick="viewProfile('${u._id}')">
+                    <img src="${getAvatar(u.avatar, u.name)}" class="user-card-avatar">
+                    <div class="user-card-info">
+                        <div class="user-card-name">${u.name} ${verifiedBadge(u.isVerified)}</div>
+                        <div class="user-card-role">${u.role === 'production_company' ? '🎬 Production' : '🎨 Artist'}</div>
+                    </div>
+                    <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); followUser('${u._id}', this)">Follow</button>
+                </div>
+            `).join('');
+            } catch (error) {
+                console.error('Failed to load suggestions:', error);
+            }
+        }
+
+        function viewProfile(userId) {
+            window.location.href = `profile.html?id=${userId}`;
+        }
+
+        async function followUser(userId, btn) {
+            try {
+                const data = await api.put(`/users/${userId}/follow`);
+                btn.textContent = data.following ? 'Following' : 'Follow';
+                btn.classList.toggle('btn-primary', data.following);
+                btn.classList.toggle('btn-outline', !data.following);
+            } catch (error) {
+                showToast('Failed to follow', 'error');
+            }
+        }
+
+        function sharePost(postId) {
+            const url = `${window.location.origin}/feed.html#post-${postId}`;
+            navigator.clipboard.writeText(url).then(() => showToast('Link copied!', 'success'));
+        }
+
+        // Create Post Modal
+        function openCreateModal(type) {
+            document.getElementById('createModal').classList.add('active');
+            if (type) setPostType(type);
+        }
+
+        function closeCreateModal() {
+            document.getElementById('createModal').classList.remove('active');
+            document.getElementById('postContent').value = '';
+            document.getElementById('postTags').value = '';
+            document.getElementById('mediaPreview').classList.add('hidden');
+            document.getElementById('mediaUploadArea').style.display = 'block';
+            selectedFile = null;
+        }
+
+        function setPostType(type) {
+            selectedPostType = type;
+            document.querySelectorAll('.type-tab').forEach(t => t.classList.toggle('active', t.dataset.type === type));
+            document.getElementById('mediaUploadArea').style.display = type === 'text' ? 'none' : 'block';
+        }
+
+        function previewMedia(input) {
+            const file = input.files[0];
+            if (!file) return;
+            selectedFile = file;
+
+            const preview = document.getElementById('mediaPreview');
+            preview.classList.remove('hidden');
+            document.getElementById('mediaUploadArea').style.display = 'none';
+
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.innerHTML = `<img src="${e.target.result}"><button class="remove-media" onclick="removeMedia()"><i class="fas fa-times"></i></button>`;
+                };
+                reader.readAsDataURL(file);
+                setPostType('image');
+            } else if (file.type.startsWith('video/')) {
+                const url = URL.createObjectURL(file);
+                preview.innerHTML = `<video src="${url}" controls></video><button class="remove-media" onclick="removeMedia()"><i class="fas fa-times"></i></button>`;
+                setPostType('video');
+            }
+        }
+
+        function removeMedia() {
+            selectedFile = null;
+            document.getElementById('mediaPreview').classList.add('hidden');
+            document.getElementById('mediaUploadArea').style.display = 'block';
+            document.getElementById('mediaFile').value = '';
+        }
+
+        async function submitPost() {
+            const content = document.getElementById('postContent').value.trim();
+            const tags = document.getElementById('postTags').value.trim();
+            const btn = document.getElementById('submitPostBtn');
+
+            if (!content && !selectedFile) {
+                showToast('Add some content or upload media', 'error');
+                return;
+            }
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
+            btn.style.pointerEvents = 'none';
+
+            try {
+                const formData = new FormData();
+                formData.append('type', selectedPostType);
+                formData.append('content', content);
+                if (tags) formData.append('tags', tags);
+                if (selectedFile) formData.append('media', selectedFile);
+
+                await api.post('/posts', formData);
+                showToast('Post published! 🎨', 'success');
+                closeCreateModal();
+                currentPage = 1;
+                loadFeed();
+            } catch (error) {
+                showToast('Failed to publish: ' + error.message, 'error');
+            } finally {
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publish';
+                btn.style.pointerEvents = 'auto';
+            }
+        }
+
+        // Profile dropdown
+        function toggleDropdown() {
+            document.getElementById('profileDropdown').classList.toggle('active');
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown')) {
+                document.getElementById('profileDropdown')?.classList.remove('active');
+            }
+        });
+
+        // Search
+        document.getElementById('searchInput')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = e.target.value.trim();
+                if (query) window.location.href = `explore.html?search=${encodeURIComponent(query)}`;
+            }
+        });
+    </script>
+</body>
+
+</html>

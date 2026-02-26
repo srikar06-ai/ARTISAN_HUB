@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisan Hub | Welcome</title>
+    <meta name="description"
+        content="Artisan Hub - The global platform connecting artists with production companies. Showcase your art, find opportunities, collaborate.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><circle cx="10" cy="10" r="3" fill="rgba(251, 191, 36, 0.8)"/></svg>') 10 10, auto;
+        }
+
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        @keyframes zoom-in {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.1);
+            }
+        }
+
+        .background-container {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .bg-slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            animation: zoom-in 40s ease-in-out infinite alternate;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            transform: scale(1);
+        }
+
+        .bg-slide.active {
+            opacity: 1;
+        }
+
+        @keyframes fadeInScaleUp {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .form-container-animation {
+            animation: fadeInScaleUp 0.8s ease-out forwards;
+            transform-style: preserve-3d;
+        }
+
+        .spotlight {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--x, 90%) var(--y, 90%), rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.5) 90%, rgba(0, 0, 0, 0.8) 80%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-label-group {
+            position: relative;
+        }
+
+        .floating-input {
+            padding-top: 1.5rem;
+        }
+
+        .floating-label {
+            position: absolute;
+            top: 50%;
+            left: 3rem;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .floating-input:focus~.floating-label,
+        .floating-input:not(:placeholder-shown)~.floating-label {
+            top: 0.75rem;
+            font-size: 0.75rem;
+            color: #fbbf24;
+        }
+
+        .link-underline {
+            position: relative;
+            text-decoration: none;
+        }
+
+        .link-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            display: block;
+            margin-top: 2px;
+            right: 50%;
+            background: #fbbf24;
+            transition: all 0.3s ease;
+        }
+
+        .link-underline:hover::after {
+            width: 100%;
+            right: 0;
+        }
+
+        .text-shadow-subtle {
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .error-shake {
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-8px);
+            }
+
+            40% {
+                transform: translateX(8px);
+            }
+
+            60% {
+                transform: translateX(-4px);
+            }
+
+            80% {
+                transform: translateX(4px);
+            }
+        }
+
+        .loading-btn {
+            position: relative;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .loading-btn::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top-color: #1a1a2e;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white overflow-hidden">
+
+    <!-- Background Slideshow Container -->
+    <div class="background-container">
+        <div class="bg-slide"></div>
+        <div class="bg-slide"></div>
+    </div>
+    <div class="spotlight"></div>
+    <div class="absolute inset-0 bg-black/70 z-1"></div>
+
+
+    <div id="main-container" class="relative min-h-screen w-full flex items-center justify-center px-4 z-10">
+        <div id="login-form"
+            class="relative z-10 w-full max-w-md p-8 sm:p-10 space-y-4 bg-black/50 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl shadow-black/50 form-container-animation">
+
+            <div class="flex justify-center">
+                <div
+                    class="w-20 h-20 rounded-full flex items-center justify-center border border-amber-400/20 overflow-hidden">
+                    <img src="cropped_circle_image.png" alt="Goddess Saraswati" class="w-full h-full object-cover">
+                </div>
+            </div>
+
+            <div class="text-center">
+                <h2 id="greeting" class="text-lg text-gray-300 text-shadow-subtle"></h2>
+                <h1
+                    class="font-playfair text-4xl sm:text-5xl font-bold text-amber-400 text-shadow-subtle hover:scale-105 transition-transform duration-300">
+                    Artisan Hub</h1>
+                <p class="text-xs text-gray-500 mt-1">Where Art Meets Opportunity</p>
+            </div>
+
+            <div id="error-msg"
+                class="hidden bg-red-500/10 border border-red-500/30 text-red-400 text-sm text-center py-2 px-4 rounded-lg">
+            </div>
+
+            <form id="loginForm" class="space-y-6 pt-4">
+                <div class="relative floating-label-group">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"><i
+                            class="fas fa-envelope"></i></span>
+                    <input type="email" id="email" placeholder=" " required
+                        class="floating-input w-full bg-white/5 border-2 border-transparent rounded-lg py-3 pl-12 pr-4 text-white placeholder-transparent focus:outline-none focus:border-amber-400/50 transition-all duration-300 shadow-md shadow-black/40 hover:shadow-lg hover:shadow-black/60 hover:-translate-y-1">
+                    <label for="email" class="floating-label">Email Address</label>
+                </div>
+                <div class="relative floating-label-group">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"><i
+                            class="fas fa-lock"></i></span>
+                    <input type="password" id="password" placeholder=" " required
+                        class="floating-input w-full bg-white/5 border-2 border-transparent rounded-lg py-3 pl-12 pr-4 text-white placeholder-transparent focus:outline-none focus:border-amber-400/50 transition-all duration-300 shadow-md shadow-black/40 hover:shadow-lg hover:shadow-black/60 hover:-translate-y-1">
+                    <label for="password" class="floating-label">Password</label>
+                </div>
+                <div class="text-right">
+                    <a href="#" class="link-underline text-xs font-medium text-gray-400 hover:text-amber-400">Forgot
+                        Password?</a>
+                </div>
+                <div>
+                    <button type="submit" id="loginBtn"
+                        class="w-full bg-gradient-to-r from-amber-400 to-amber-500 text-gray-900 font-bold py-3 rounded-lg hover:from-amber-500 active:scale-95 transition-all duration-300 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 hover:-translate-y-1">
+                        ENTER THE STUDIO
+                    </button>
+                </div>
+            </form>
+
+            <div class="relative flex items-center py-2">
+                <div class="flex-grow border-t border-white/10"></div>
+                <span class="flex-shrink mx-4 text-xs text-gray-400 uppercase">Or Continue With</span>
+                <div class="flex-grow border-t border-white/10"></div>
+            </div>
+
+            <div class="flex items-center justify-center space-x-4">
+                <button
+                    class="w-12 h-12 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-300 shadow-md shadow-black/40 hover:-translate-y-1"><i
+                        class="fab fa-google text-lg"></i></button>
+                <button
+                    class="w-12 h-12 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-300 shadow-md shadow-black/40 hover:-translate-y-1"><i
+                        class="fab fa-apple text-xl"></i></button>
+                <button
+                    class="w-12 h-12 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-300 shadow-md shadow-black/40 hover:-translate-y-1"><i
+                        class="fab fa-facebook text-lg"></i></button>
+            </div>
+
+            <p class="text-center text-sm text-gray-400 pt-2 text-shadow-subtle">
+                Not a member yet?
+                <a href="signup.html" class="link-underline font-semibold text-amber-400 hover:text-amber-500">Sign
+                    Up</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Redirect if already logged in
+            if (isLoggedIn()) {
+                window.location.href = '/feed.html';
+                return;
+            }
+
+            const form = document.getElementById('login-form');
+            const mainContainer = document.getElementById('main-container');
+            const loginForm = document.getElementById('loginForm');
+            const errorMsg = document.getElementById('error-msg');
+            const loginBtn = document.getElementById('loginBtn');
+
+            // 3D tilt effect
+            form.addEventListener('mousemove', (e) => {
+                const { left, top, width, height } = form.getBoundingClientRect();
+                const x = e.clientX - left;
+                const y = e.clientY - top;
+                const rotateX = (height / 2 - y) / (height / 2) * -5;
+                const rotateY = (width / 2 - x) / (width / 2) * 5;
+                form.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+            });
+
+            form.addEventListener('mouseleave', () => {
+                form.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            });
+
+            // Spotlight
+            mainContainer.addEventListener('mousemove', (e) => {
+                document.body.style.setProperty('--x', `${e.clientX}px`);
+                document.body.style.setProperty('--y', `${e.clientY}px`);
+            });
+
+            // Greeting
+            const greetingEl = document.getElementById('greeting');
+            const hour = new Date().getHours();
+            if (hour < 12) { greetingEl.textContent = 'Good Morning'; }
+            else if (hour < 18) { greetingEl.textContent = 'Good Afternoon'; }
+            else { greetingEl.textContent = 'Good Evening'; }
+
+            // Slideshow
+            const backgrounds = ['background1.avif', 'background2.jpg'];
+            const slides = document.querySelectorAll('.bg-slide');
+            let currentSlideIndex = 0;
+
+            function changeBackground() {
+                const nextSlideIndex = (currentSlideIndex + 1) % slides.length;
+                const currentSlide = slides[currentSlideIndex];
+                const nextSlide = slides[nextSlideIndex];
+                const nextImageIndex = Math.floor(Math.random() * backgrounds.length);
+                nextSlide.style.backgroundImage = `url('${backgrounds[nextImageIndex]}')`;
+                currentSlide.classList.remove('active');
+                nextSlide.classList.add('active');
+                currentSlideIndex = nextSlideIndex;
+            }
+
+            slides[0].style.backgroundImage = `url('${backgrounds[0]}')`;
+            slides[0].classList.add('active');
+            setInterval(changeBackground, 7000);
+
+            // Login form submission
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+
+                if (!email || !password) {
+                    showError('Please fill in all fields');
+                    return;
+                }
+
+                loginBtn.textContent = 'Entering...';
+                loginBtn.classList.add('loading-btn');
+
+                try {
+                    await login(email, password);
+                    showToast('Welcome back! 🎨', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/feed.html';
+                    }, 500);
+                } catch (error) {
+                    showError(error.message || 'Login failed. Please try again.');
+                    loginBtn.textContent = 'ENTER THE STUDIO';
+                    loginBtn.classList.remove('loading-btn');
+                }
+            });
+
+            function showError(msg) {
+                errorMsg.textContent = msg;
+                errorMsg.classList.remove('hidden');
+                errorMsg.classList.add('error-shake');
+                setTimeout(() => errorMsg.classList.remove('error-shake'), 500);
+                setTimeout(() => errorMsg.classList.add('hidden'), 5000);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

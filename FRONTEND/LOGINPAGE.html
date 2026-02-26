@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisan Hub — Where Artists Connect, Create & Collaborate</title>
+    <meta name="description"
+        content="Artisan Hub is the premier platform for artists to showcase work, discover talent, and collaborate on creative projects. A LinkedIn for the art world.">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+</head>
+
+<body>
+
+    <!-- ============================================================
+         AUTH PAGE — Login & Signup
+         ============================================================ -->
+    <div id="auth-page" class="auth-page">
+        <!-- Background Slideshow -->
+        <div class="background-container">
+            <div class="bg-slide"></div>
+            <div class="bg-slide"></div>
+        </div>
+        <div class="spotlight-overlay"></div>
+        <div class="dark-overlay"></div>
+
+        <!-- Auth Card -->
+        <div class="auth-card">
+            <!-- Logo -->
+            <div class="auth-logo">
+                <img src="cropped_circle_image.png" alt="Artisan Hub Logo">
+            </div>
+
+            <!-- ---- LOGIN PANEL ---- -->
+            <div id="login-panel" class="auth-panel">
+                <p id="auth-greeting" class="auth-greeting"></p>
+                <h1 class="auth-title">Artisan Hub</h1>
+                <p class="auth-subtitle">Step into the creative studio</p>
+
+                <form id="login-form-el">
+                    <div class="input-group">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="login-email" class="input-field" placeholder="Email address" required
+                            autocomplete="email">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="login-password" class="input-field" placeholder="Password" required
+                            autocomplete="current-password">
+                    </div>
+                    <a href="#" class="forgot-link"
+                        onclick="showToast('Password reset coming soon!', 'fa-info-circle')">Forgot Password?</a>
+                    <button type="submit" class="btn-primary">Enter the Studio</button>
+                </form>
+
+                <div class="auth-divider"><span>or continue with</span></div>
+
+                <div class="social-buttons">
+                    <button class="btn-social" onclick="showToast('Google login coming soon!', 'fa-info-circle')"
+                        title="Google"><i class="fab fa-google"></i></button>
+                    <button class="btn-social" onclick="showToast('Apple login coming soon!', 'fa-info-circle')"
+                        title="Apple"><i class="fab fa-apple"></i></button>
+                    <button class="btn-social" onclick="showToast('Facebook login coming soon!', 'fa-info-circle')"
+                        title="Facebook"><i class="fab fa-facebook-f"></i></button>
+                </div>
+
+                <p class="auth-link-text">
+                    Not a member? <a href="#" class="auth-link" onclick="showSignupPanel()">Create Account</a>
+                </p>
+            </div>
+
+            <!-- ---- SIGNUP PANEL ---- -->
+            <div id="signup-panel" class="auth-panel hidden">
+                <h1 class="auth-title" style="font-size: 2rem;">Join the Collective</h1>
+                <p class="auth-subtitle">Begin your creative journey</p>
+
+                <form id="signup-form-el">
+                    <div class="input-group">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="signup-name" class="input-field" placeholder="Full name" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="signup-email" class="input-field" placeholder="Email address" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-palette input-icon"></i>
+                        <select id="signup-role" class="input-field">
+                            <option value="" disabled selected>Select your art form</option>
+                            <option value="Painter">Painter</option>
+                            <option value="Digital Artist">Digital Artist</option>
+                            <option value="Photographer">Photographer</option>
+                            <option value="Sculptor">Sculptor</option>
+                            <option value="Film Director">Film Director</option>
+                            <option value="Actor">Actor</option>
+                            <option value="Musician">Musician</option>
+                            <option value="Dancer">Dancer</option>
+                            <option value="Writer">Writer</option>
+                            <option value="Mixed Media Artist">Mixed Media Artist</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="signup-password" class="input-field"
+                            placeholder="Create password (min 6 chars)" required minlength="6">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-check-circle input-icon"></i>
+                        <input type="password" id="signup-confirm-password" class="input-field"
+                            placeholder="Confirm password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Create Account</button>
+                </form>
+
+                <p class="auth-link-text" style="margin-top: 16px;">
+                    Already a member? <a href="#" class="auth-link" onclick="showLoginPanel()">Log In</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         MAIN APP — Dashboard
+         ============================================================ -->
+    <div id="app-container" class="app-container">
+
+        <!-- ---- Top Navbar ---- -->
+        <nav class="navbar">
+            <div class="navbar-brand" onclick="navigateTo('feed')">
+                <div class="navbar-brand-logo">
+                    <img src="cropped_circle_image.png" alt="Artisan Hub">
+                </div>
+                <span class="navbar-brand-name">Artisan Hub</span>
+            </div>
+
+            <div class="navbar-center">
+                <a href="#" class="nav-link active" data-page="feed">
+                    <i class="fas fa-fire"></i> Feed
+                </a>
+                <a href="#" class="nav-link" data-page="connect">
+                    <i class="fas fa-users"></i> Connect
+                </a>
+                <a href="#" class="nav-link" data-page="upload">
+                    <i class="fas fa-plus-circle"></i> Upload
+                </a>
+                <a href="#" class="nav-link" data-page="profile">
+                    <i class="fas fa-user-circle"></i> Profile
+                </a>
+            </div>
+
+            <div class="navbar-right">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Search artworks, artists...">
+                </div>
+                <div style="position: relative;">
+                    <div class="navbar-avatar" id="navbar-avatar">
+                        <span class="user-avatar-initial">AH</span>
+                    </div>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <button class="user-dropdown-item" onclick="navigateTo('profile')">
+                            <i class="fas fa-user"></i> My Profile
+                        </button>
+                        <button class="user-dropdown-item" onclick="showToast('Settings coming soon!', 'fa-cog')">
+                            <i class="fas fa-cog"></i> Settings
+                        </button>
+                        <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 4px 0;">
+                        <button class="user-dropdown-item danger" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt"></i> Log Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ---- Page Content ---- -->
+        <main class="page-content">
+
+            <!-- ======== FEED PAGE ======== -->
+            <section id="page-feed" class="page-section active">
+                <div class="feed-header">
+                    <h1>Discover Masterpieces</h1>
+                    <p>Explore artwork from the most talented artists across the globe</p>
+                </div>
+
+                <div class="category-pills">
+                    <button class="pill active" data-category="All" onclick="filterFeed('All', this)">All</button>
+                    <button class="pill" data-category="Painting" onclick="filterFeed('Painting', this)">🎨
+                        Painting</button>
+                    <button class="pill" data-category="Digital Art" onclick="filterFeed('Digital Art', this)">💻
+                        Digital Art</button>
+                    <button class="pill" data-category="Photography" onclick="filterFeed('Photography', this)">📷
+                        Photography</button>
+                    <button class="pill" data-category="Sculpture" onclick="filterFeed('Sculpture', this)">🗿
+                        Sculpture</button>
+                    <button class="pill" data-category="Film" onclick="filterFeed('Film', this)">🎬 Film</button>
+                    <button class="pill" data-category="Music" onclick="filterFeed('Music', this)">🎵 Music</button>
+                </div>
+
+                <div id="feed-grid" class="masonry-grid stagger-children">
+                    <!-- Rendered by JS -->
+                </div>
+            </section>
+
+            <!-- ======== CONNECT PAGE ======== -->
+            <section id="page-connect" class="page-section">
+                <div class="connect-header">
+                    <h1>Connect & Collaborate</h1>
+                    <p>Find artists to collaborate with — directors, actors, musicians, painters and more</p>
+                </div>
+                <div id="artists-grid" class="artists-grid stagger-children">
+                    <!-- Rendered by JS -->
+                </div>
+            </section>
+
+            <!-- ======== UPLOAD PAGE ======== -->
+            <section id="page-upload" class="page-section">
+                <div class="upload-section">
+                    <h1>Share Your Art</h1>
+                    <p>Upload your masterpiece and let the world see your talent</p>
+
+                    <div id="upload-drop-zone" class="upload-drop-zone">
+                        <i class="fas fa-cloud-arrow-up"></i>
+                        <h3>Drag & drop your artwork here</h3>
+                        <p>or <span class="browse-link">browse files</span> from your device</p>
+                        <p style="margin-top: 8px; font-size: 0.7rem;">Supports JPG, PNG, WEBP up to 10MB</p>
+                    </div>
+                    <input type="file" id="upload-file-input" accept="image/*" style="display: none;">
+
+                    <div id="upload-preview" class="upload-preview">
+                        <img id="upload-preview-img" src="" alt="Preview">
+                        <button class="upload-preview-remove" onclick="removeUploadPreview()" title="Remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <form id="upload-form-el" class="upload-form">
+                        <div class="form-group">
+                            <label for="upload-title">Title</label>
+                            <input type="text" id="upload-title" placeholder="Give your artwork a name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="upload-description">Description</label>
+                            <textarea id="upload-description" placeholder="Tell the story behind your work..."
+                                rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="upload-category">Category</label>
+                            <select id="upload-category">
+                                <option value="Painting">Painting</option>
+                                <option value="Digital Art">Digital Art</option>
+                                <option value="Photography">Photography</option>
+                                <option value="Sculpture">Sculpture</option>
+                                <option value="Film">Film</option>
+                                <option value="Music">Music</option>
+                                <option value="Dance">Dance</option>
+                                <option value="Theatre">Theatre</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary">Publish Artwork</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ======== PROFILE PAGE ======== -->
+            <section id="page-profile" class="page-section">
+                <div class="profile-header">
+                    <div class="profile-cover"></div>
+                    <div class="profile-info-bar">
+                        <div class="profile-avatar-large" id="profile-avatar">AH</div>
+                        <div class="profile-details">
+                            <h1 class="profile-name" id="profile-name">Artist Name</h1>
+                            <p class="profile-tagline" id="profile-role">Artist</p>
+                            <div class="profile-stats-row">
+                                <div class="profile-stat-item">
+                                    <div class="profile-stat-value" id="profile-artwork-count">0</div>
+                                    <div class="profile-stat-label">Artworks</div>
+                                </div>
+                                <div class="profile-stat-item">
+                                    <div class="profile-stat-value" id="profile-connection-count">0</div>
+                                    <div class="profile-stat-label">Connections</div>
+                                </div>
+                                <div class="profile-stat-item">
+                                    <div class="profile-stat-value">0</div>
+                                    <div class="profile-stat-label">Likes</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <button class="btn-outline" onclick="showToast('Edit profile coming soon!', 'fa-pen')">
+                                <i class="fas fa-pen"></i> Edit Profile
+                            </button>
+                            <button class="btn-fill" onclick="navigateTo('upload')">
+                                <i class="fas fa-plus"></i> Upload
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-about">
+                    <h2>About</h2>
+                    <p id="profile-bio">No bio yet. Tell the world about your art journey!</p>
+                    <div class="profile-skills" id="profile-skills">
+                        <span class="skill-tag">Art</span>
+                        <span class="skill-tag">Creativity</span>
+                    </div>
+                </div>
+
+                <div class="profile-works-header">
+                    <h2>My Artworks</h2>
+                </div>
+                <div class="profile-works-grid" id="profile-works-grid">
+                    <!-- Rendered by JS -->
+                </div>
+            </section>
+        </main>
+
+        <!-- ---- Mobile Bottom Nav ---- -->
+        <nav class="mobile-nav">
+            <a href="#" class="mobile-nav-link active" data-page="feed">
+                <i class="fas fa-fire"></i> Feed
+            </a>
+            <a href="#" class="mobile-nav-link" data-page="connect">
+                <i class="fas fa-users"></i> Connect
+            </a>
+            <a href="#" class="mobile-nav-link" data-page="upload">
+                <i class="fas fa-plus-circle"></i> Upload
+            </a>
+            <a href="#" class="mobile-nav-link" data-page="profile">
+                <i class="fas fa-user"></i> Profile
+            </a>
+        </nav>
+
+        <!-- ---- Floating Action Button ---- -->
+        <button class="fab" id="fab" onclick="navigateTo('upload')" title="Upload Artwork">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <!-- ============================================================
+         ARTWORK DETAIL MODAL
+         ============================================================ -->
+    <div id="artwork-modal" class="modal-overlay" role="dialog" aria-modal="true">
+        <button class="modal-close" onclick="closeArtworkModal()" aria-label="Close modal">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-content">
+            <img id="modal-image" class="modal-image" src="" alt="">
+            <div class="modal-body">
+                <span class="artwork-category-tag" id="modal-category">Painting</span>
+                <h2 class="modal-title" id="modal-title">Artwork Title</h2>
+                <p class="modal-description" id="modal-description">Description goes here...</p>
+                <div class="modal-artist-row">
+                    <div class="artwork-artist">
+                        <div class="artwork-artist-avatar" id="modal-artist-initials">AM</div>
+                        <span class="artwork-artist-name" id="modal-artist-name">Artist Name</span>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-outline"
+                            onclick="showToast('Collaboration request sent! 🤝', 'fa-handshake')"
+                            style="padding: 8px 20px; font-size: 0.8rem;">
+                            <i class="fas fa-handshake"></i> Collaborate
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         TOAST CONTAINER
+         ============================================================ -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- App Script -->
+    <script src="app.js"></script>
+
+</body>
+
+</html>
