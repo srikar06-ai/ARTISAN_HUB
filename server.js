@@ -4,8 +4,13 @@ const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const path = require('path');
+const mongoose = require('mongoose');
 const connectDB = require('./BACKEND/config/db');
 const { initSocket } = require('./BACKEND/socket');
+
+// Log environment check
+console.log(`🔍 MONGO_URI is: ${process.env.MONGO_URI ? 'SET (' + process.env.MONGO_URI.substring(0, 20) + '...)' : '❌ NOT SET'}`);
+console.log(`🔍 NODE_ENV: ${process.env.NODE_ENV || 'not set'}`);
 
 // Connect to MongoDB
 connectDB();
@@ -18,6 +23,18 @@ const io = new Server(server, { cors: { origin: '*' } });
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Health check endpoint (for debugging)
+app.get('/api/health', (req, res) => {
+    const dbState = mongoose.connection.readyState;
+    const states = { 0: 'disconnected', 1: 'connected', 2: 'connecting', 3: 'disconnecting' };
+    res.json({
+        server: 'running',
+        database: states[dbState] || 'unknown',
+        mongoUri: process.env.MONGO_URI ? 'set' : 'NOT SET',
+        timestamp: new Date().toISOString()
+    });
+});
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'FRONTEND')));
